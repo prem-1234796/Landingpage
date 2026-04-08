@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Vault | The Grand Entrance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Fauna+One&family=Marcellus&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-gold: #996515;
+            --bg-deep: #0a0a0a;
+            --bg-accent: #161616;
+            --text-main: #f4ece1;
+            --border: rgba(212, 175, 55, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(212, 175, 55, 0.3);
+        }
+
+        .light-mode {
+            --bg-deep: #fdfaf3;
+            --bg-accent: #f2ede0;
+            --text-main: #1a1a1a;
+            --border: rgba(153, 101, 21, 0.3);
+            --glass-bg: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(153, 101, 21, 0.4);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Fauna One', serif;
+            transition: background 0.6s ease, color 0.6s ease;
+            overflow-x: hidden;
+        }
+
+        .moralana { font-family: 'Marcellus', serif; letter-spacing: 0.2em; text-transform: uppercase; }
+        .cinzel { font-family: 'Cinzel', serif; }
+
+        .gold-gradient {
+            background: linear-gradient(to bottom, #f9f295 0%, #e0aa3e 25%, #e0aa3e 50%, #b88a44 75%, #f9f295 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-parallax {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1920&q=80');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 120px 0;
+        }
+
+        .deco-border {
+            position: relative;
+            padding: 40px;
+            border: 1px solid var(--gold);
+        }
+
+        .deco-border::before, .deco-border::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gold);
+        }
+
+        .deco-border::before { top: -10px; left: -10px; border-right: 0; border-bottom: 0; }
+        .deco-border::after { bottom: -10px; right: -10px; border-left: 0; border-top: 0; }
+
+        /* Glass Effect Button Base */
+        .btn-glass {
+            position: relative;
+            padding: 1rem 2.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--gold);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .btn-glass:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.25);
+            color: #fff;
+        }
+
+        .btn-glass-subtle {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-glass-subtle:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Expanding Description Styles */
+        #description-panel {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 2rem;
+        }
+
+        #description-panel.expanded {
+            max-height: 500px;
+            opacity: 1;
+            padding-top: 1rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 4px;
+        }
+
+        .feature-card {
+            background: var(--bg-accent);
+            border: 1px solid var(--border);
+            transition: 0.5s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        .ornament {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 2rem 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating { animation: float 6s ease-in-out infinite; }
+
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--gold);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after { width: 100%; }
+        
+        #themeIcon { transition: transform 0.5s ease; }
+        .light-mode #themeIcon { transform: rotate(180deg); }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <nav class="fixed w-full z-50 flex justify-between items-center px-6 py-4 md:px-12 backdrop-blur-md border-b border-stone-800/30">
+        <div class="text-2xl cinzel font-bold gold-gradient cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">VINTAGE VAULT</div>
+        <div class="hidden md:flex space-x-8 moralana text-xs">
+            <a href="#about" class="nav-link">The Legacy</a>
+            <a href="#curation" class="nav-link">Curation</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="toggleTheme()" class="p-2 border border-[--gold] rounded-full text-[--gold] hover:bg-[--gold] hover:text-black transition-colors" title="Toggle Theme">
+                <svg id="themeIcon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-parallax flex items-center justify-center text-center px-4">
+        <div class="max-w-4xl">
+            <p class="moralana text-[--gold] mb-4 text-xs md:text-sm tracking-[0.5em] floating">A Digital Sanctuary for Time</p>
+            <h1 class="cinzel text-6xl md:text-9xl font-black gold-gradient mb-8 leading-tight">PRESERVE <br> THE EPOCH</h1>
+            <div class="ornament"></div>
+            <p class="text-xl md:text-2xl italic text-stone-300 font-serif mb-12 max-w-2xl mx-auto">
+                Step through the corridors of human history. From the dust of ancient Rome to the binary pulse of the digital age.
+            </p>
+            
+            <div class="flex flex-col items-center gap-6 justify-center">
+                <div class="flex flex-col sm:flex-row gap-6 w-full justify-center">
+                    <!-- Begin Exploration -->
+                    <a href="https://website-vkm3.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-glass moralana">Begin Exploration</a>
+                    <!-- Learn More with Expand Effect -->
+                    <button onclick="toggleDescription()" id="learn-more-btn" class="btn-glass btn-glass-subtle moralana text-xs">Learn More</button>
+                </div>
+
+                <!-- Hidden Description Panel -->
+                <div id="description-panel" class="w-full max-w-2xl">
+                    <div class="glass-card text-left">
+                        <p class="text-stone-300 leading-relaxed font-serif">
+                            Vintage Vault is a curated digital archive dedicated to the preservation of human history. Our platform meticulously categorizes pivotal eras, from the architectural marvels of the classical world to the socio-political shifts of the industrial revolution. By bridging the gap between traditional research and modern accessibility, we provide a sensory journey through time for scholars, historians, and the curious mind. Explore deep-dive analyses, high-fidelity artifacts, and the chronologies that defined our collective existence.
+                        </p>
+                        <div class="mt-4 flex justify-end">
+                            <button onclick="toggleDescription()" class="text-[--gold] text-[10px] moralana hover:underline">Close Record</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Legacy Section -->
+    <section id="about" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div class="deco-border">
+                <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80" alt="History" class="grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl rounded-sm">
+            </div>
+            <div>
+                <h2 class="cinzel text-4xl gold-gradient mb-6">The Curator's Intent</h2>
+                <p class="text-stone-400 text-lg leading-relaxed mb-6">
+                    History is not a collection of dead dates; it is a living tapestry of choices, tragedies, and triumphs. The Vintage Vault was built to honor the "Long Centuries"—periods where the world didn't just change, it was reborn.
+                </p>
+                <div class="grid grid-cols-2 gap-8 mt-12">
+                    <div>
+                        <span class="cinzel text-3xl text-[--gold] block mb-2">2,000</span>
+                        <span class="moralana text-[10px] text-stone-500">Years of History</span>
+                    </div>
+                    <div>
+                        <span class="cinzel text-3xl text-[--gold] block mb-2">12</span>
+                        <span class="moralana text-[10px] text-stone-500">Pivotal Eras</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curation Grid -->
+    <section id="curation" class="bg-[--bg-accent] py-24 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto text-center mb-16">
+            <h2 class="cinzel text-5xl gold-gradient mb-4">Exhibition Pillars</h2>
+            <div class="ornament w-24 mx-auto"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div class="feature-card p-10 text-center">
+                <div class="w-16 h-16 border border-[--gold] flex items-center justify-center mx-auto mb-8">
+                    <span class="cinzel text-[--gold] text-2xl">I</span>
+                </div>
+                <h3 class="cinzel text-xl mb-4">The Crucible</h3>
+                <p class="text-stone-500 text-sm italic">Analyzing the wars and political upheavals that forged new national identities.</p>
+            </div>
+            <div class="feature-card p-10 text-center">
+                <div class="w-16 h-16 border border-[--gold] flex items-center justify-center mx-auto mb-8">
+                    <span class="cinzel text-[--gold] text-2xl">II</span>
+                </div>
+                <h3 class="cinzel text-xl mb-4">Apex Achievements</h3>
+                <p class="text-stone-500 text-sm italic">Celebrating the inventions and artistic breakthroughs that defined humanity's reach.</p>
+            </div>
+            <div class="feature-card p-10 text-center">
+                <div class="w-16 h-16 border border-[--gold] flex items-center justify-center mx-auto mb-8">
+                    <span class="cinzel text-[--gold] text-2xl">III</span>
+                </div>
+                <h3 class="cinzel text-xl mb-4">Eternal Records</h3>
+                <p class="text-stone-500 text-sm italic">A digitized timeline spanning the Apostolic Era to the birth of Generative AI.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Minimalist Footer -->
+    <footer class="border-t border-stone-800 py-16 px-6 md:px-12 bg-black">
+        <div class="max-w-7xl mx-auto text-center opacity-50">
+            <div class="cinzel text-2xl mb-8 gold-gradient">VINTAGE VAULT</div>
+            <div class="flex justify-center space-x-8 moralana text-[10px] mb-8">
+                <a href="https://website-vkm3.vercel.app" target="_blank" class="hover:text-[--gold] transition-colors">Website</a>
+                <a href="https://website-vkm3.vercel.app/faq" target="_blank" class="hover:text-[--gold] transition-colors">Support</a>
+            </div>
+            <div class="moralana text-[9px] tracking-widest">
+                &copy; 2024 Global Chronology Archive • For the Discerning Historian
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle Expanded Description
+        function toggleDescription() {
+            const panel = document.getElementById('description-panel');
+            const btn = document.getElementById('learn-more-btn');
+            
+            panel.classList.toggle('expanded');
+            
+            if(panel.classList.contains('expanded')) {
+                btn.style.opacity = "0.5";
+                btn.innerText = "Hide Details";
+                // Smooth scroll to view description if needed
+                setTimeout(() => {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                btn.style.opacity = "1";
+                btn.innerText = "Learn More";
+            }
+        }
+
+        // Smooth scroll for anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const element = document.querySelector(targetId);
+                    if(element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Toggle Theme Logic
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+    </script>
+</body>
+</html>
